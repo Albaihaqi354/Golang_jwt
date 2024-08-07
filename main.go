@@ -2,6 +2,7 @@ package main
 
 import (
 	"golang_jwt/configs"
+	"golang_jwt/routes"
 	"log"
 	"net/http"
 
@@ -14,6 +15,8 @@ func main() {
 	r := mux.NewRouter()
 
 	router := r.PathPrefix("/api").Subrouter()
+
+	routes.AuthRoutes(router)
 
 	log.Println("Server Running on Port: 8080")
 	http.ListenAndServe(":8080", router)

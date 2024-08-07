@@ -23,7 +23,7 @@ func Response(w http.ResponseWriter, code int, message string, payload interface
 	var response any
 	status := "Success"
 
-	if code > 400 {
+	if code >= 400 {
 		status = "Failed"
 	}
 
