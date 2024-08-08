@@ -8,16 +8,16 @@ import (
 
 func Auth(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		accestoken := r.Header.Get("Authorization")
+		accessToken := r.Header.Get("Authorization")
 
-		if accestoken != "" {
-			helpers.Response(w, 410, "unauthorired", nil)
+		if accessToken == "" {
+			helpers.Response(w, http.StatusUnauthorized, "unauthorized", nil)
 			return
 		}
 
-		user, err := helpers.ValidationToken(accestoken)
+		user, err := helpers.ValidationToken(accessToken)
 		if err != nil {
-			helpers.Response(w, 410, err.Error(), nil)
+			helpers.Response(w, http.StatusUnauthorized, err.Error(), nil)
 			return
 		}
 
