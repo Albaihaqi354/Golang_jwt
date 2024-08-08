@@ -1,6 +1,7 @@
 package helpers
 
 import (
+	"fmt"
 	"golang_jwt/models"
 	"time"
 
@@ -32,4 +33,22 @@ func CreateToken(user *models.User) (string, error) {
 	ss, err := token.SignedString(mySignininKey)
 
 	return ss, err
+}
+
+func ValidationToken(tokenString string) (any, error) {
+	token, err := jwt.ParseWithClaims(tokenString, &MyCustomClaims{}, func(t *jwt.Token) (interface{}, error) {
+		return mySignininKey, nil
+	})
+
+	if err != nil {
+		return nil, fmt.Errorf("unauthorized")
+	}
+
+	claims, ok := token.Claims.(*MyCustomClaims)
+
+	if !ok || !token.Valid {
+		return nil, fmt.Errorf("unauthorized")
+	}
+
+	return claims, nil
 }
